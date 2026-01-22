@@ -44,7 +44,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    # هذا السطر هو الحل لمشكلة المظهر الأبيض (تمت إضافته بنجاح)
+    # هذا السطر ضروري جداً للألوان (WhiteNoise)
     'whitenoise.middleware.WhiteNoiseMiddleware',
     
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -107,7 +107,6 @@ WSGI_APPLICATION = 'sulpak.wsgi.application'
 
 
 # Database
-# استخدام قاعدة بيانات محلية لتجنب أخطاء الاتصال
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -153,11 +152,14 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 # Static files (CSS, JavaScript, Images)
 
 STATIC_URL = '/static/'
+
+# مسار تجميع الملفات (مهم جداً لـ Render)
 STATIC_ROOT = BASE_DIR / 'staticfiles'
+
 STATICFILES_DIRS = [BASE_DIR / 'static']
 
-# إعدادات خاصة لإصلاح المظهر على سيرفر Render
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+# التعديل الذهبي: استخدام التخزين المضغوط لضمان عمل الألوان بدون أخطاء
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
