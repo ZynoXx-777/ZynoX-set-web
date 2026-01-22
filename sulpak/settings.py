@@ -44,13 +44,15 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    # هذا السطر هو الحل لمشكلة المظهر الأبيض (تمت إضافته بنجاح)
+    'whitenoise.middleware.WhiteNoiseMiddleware',
+    
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    # هذا هو السطر الناقص الذي أضفته لك الآن ليحل المشكلة
     'allauth.account.middleware.AccountMiddleware',
 ]
 
@@ -105,7 +107,7 @@ WSGI_APPLICATION = 'sulpak.wsgi.application'
 
 
 # Database
-# استخدام قاعدة بيانات محلية لتجنب أخطاء الاتصال والسيرفرات الخارجية
+# استخدام قاعدة بيانات محلية لتجنب أخطاء الاتصال
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -145,7 +147,6 @@ USE_L10N = True
 USE_TZ = True
 
 # Email configuration
-# تم تعطيل الإيميل الحقيقي مؤقتاً لتجنب أخطاء config
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 
@@ -154,6 +155,9 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_DIRS = [BASE_DIR / 'static']
+
+# إعدادات خاصة لإصلاح المظهر على سيرفر Render
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
